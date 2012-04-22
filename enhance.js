@@ -128,30 +128,29 @@ Enhance.TextEn = (function () {
 
 Enhance.Expectation = function () {
     'use strict';
+    var methodName = '',
+        methodArguments = [],
+        returnValue = null,
+        returnException = false,
+        expectedCalls = -1,
+        actualCalls = 0,
+        expectArguments = false,
+        expectTimes = false,
+        type = 'method';
 
     return {
-        methodName: '',
-        methodArguments: [],
-        returnValue: null,
-        returnException: false,
-        expectedCalls: -1,
-        actualCalls: 0,
-        expectArguments: false,
-        expectTimes: false,
-        type: 'method',
-        text: {},
         matches: function (method, args) {
             var i;
-            if (method !== this.methodName) {
+            if (method !== methodName) {
                 return false;
             }
 
-            if (this.expectArguments) {
-                if (args.length !== this.methodArguments.length) {
+            if (expectArguments) {
+                if (args.length !== methodArguments.length) {
                     return false;
                 }
-                for (i = 0; i < this.methodArguments.length; i++) {
-                    if (args[i] !== this.methodArguments[i]) {
+                for (i = 0; i < methodArguments.length; i++) {
+                    if (args[i] !== methodArguments[i]) {
                         return false;
                     }
                 }
@@ -159,53 +158,53 @@ Enhance.Expectation = function () {
             return true;
         },
         called: function () {
-            if (!this.actualCalls) {
-                this.actualCalls = 0;
+            if (!actualCalls) {
+                actualCalls = 0;
             }
-            this.actualCalls = this.actualCalls + 1;
+            actualCalls = actualCalls + 1;
 
-            if (this.returnException) {
-                throw this.returnValue;
+            if (returnException) {
+                throw returnValue;
             }
-            return this.returnValue;
+            return returnValue;
         },
-        method: function (methodName) {
-            this.type = 'method';
-            this.methodName = methodName;
+        method: function (name) {
+            type = 'method';
+            methodName = name;
             return this;
         },
-        getProperty: function (propertyName) {
-            this.type = 'getProperty';
-            this.methodName = propertyName;
+        getProperty: function (name) {
+            type = 'getProperty';
+            methodName = name;
             return this;
         },
-        setProperty: function (propertyName) {
-            this.type = 'setProperty';
-            this.methodName = propertyName;
+        setProperty: function (name) {
+            type = 'setProperty';
+            methodName = name;
             return this;
         },
         withArguments: function () {
-            this.expectArguments = true;
-            this.methodArguments = arguments;
+            expectArguments = true;
+            methodArguments = arguments;
             return this;
         },
-        returns: function (returnValue) {
-            this.returnValue = returnValue;
+        returns: function (value) {
+            returnValue = value;
             return this;
         },
         throwsException: function (message) {
-            this.returnValue = message;
-            this.returnException = true;
+            returnValue = message;
+            returnException = true;
             return this;
         },
-        times: function (expectedCalls) {
-            this.expectTimes = true;
-            this.expectedCalls = expectedCalls;
+        times: function (expected) {
+            expectTimes = true;
+            expectedCalls = expected;
             return this;
         },
         verify: function () {
-            if (this.expectTimes) {
-                if (this.expectedCalls !== this.actualCalls) {
+            if (expectTimes) {
+                if (expectedCalls !== actualCalls) {
                     return false;
                 }
             }
