@@ -6,15 +6,16 @@ class JqueryExampleTest
   this.changeDescriptionExpectCorrectAltTag = ->
     id = 'test'
     description = 'Test Description'
-    mock = MockRepository.generateMock().method('attr')
-    mock.expect().method('attr').withArguments('alt', description).returns(mock).times(1)
-    mock.expect().method('attr').withArguments('title', description).returns(mock).times(1)
+    idTestMock = MockRepository.generateJqueryMock('$', '#test').methods('attr')
+    idTestMock.expect().method('attr').withArguments('alt', description).returns(idTestMock).times(1)
+    idTestMock.expect().method('attr').withArguments('title', description).returns(idTestMock).times(1)
 
-    root.$ = ->
-      return mock
+    classListMock = MockRepository.generateJqueryMock('$', '.list').methods('width')
+    classListMock.expect().method('width').returns(321).times(1)
 
     JqueryExample.changeDescription(id, description)
 
-    mock.verifyExpectations()
+    idTestMock.verifyExpectations()
+    classListMock.verifyExpectations()
 
 Enhance.discoverTests(JqueryExampleTest).runTests();

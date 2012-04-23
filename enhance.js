@@ -1,8 +1,13 @@
-/* Enhance Test Framework v 1.0.2 */
-/* http://www.stevefenton.co.uk/Content/JavaScript-Enhance-Test-Framework/ */
+/*
+Enhance Test Framework v 1.0.3
+http://www.enhance-js.com/
+http://www.stevefenton.co.uk/Content/JavaScript-Enhance-Test-Framework/
+TODO: different outputs, like TAP, XML
+*/
+
 var document = document || {};
 var console = console || {};
-/* TODO: tap, xml */
+
 var Enhance = (function () {
     'use strict';
     var tests = [], passingTests = [], failingTests = [], text = null, getKeys, register, runTests, writeResult;
@@ -216,6 +221,7 @@ Enhance.Expectation = function () {
 var MockRepository = (function () {
     'use strict';
     var i;
+    var jQueryMocks = [];
 
     return {
         generateMock: function () {
@@ -259,6 +265,19 @@ var MockRepository = (function () {
 
                 };
             }());
+        },
+        generateJqueryMock: function (jQueryAlias, selector) {
+            var root = typeof exports !== "undefined" && exports !== null ? exports : window;
+            var mock = MockRepository.generateMock();
+            jQueryMocks[selector] = mock;
+
+            root[jQueryAlias] = function () {
+                if (!jQueryMocks[arguments[0]]) {
+                    throw 'TODO: No mock found for ' + arguments[0];
+                }
+                return jQueryMocks[arguments[0]];
+            };
+            return mock;
         }
     };
 }());

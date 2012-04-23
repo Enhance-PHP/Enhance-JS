@@ -11,11 +11,9 @@
     function JqueryExample() {}
 
     JqueryExample.changeDescription = function(id, description) {
-      return $('#' + id).attr('alt', description).attr('title', description);
-    };
-
-    JqueryExample.doSomethingWithAjax = function(id, url) {
-      return 'todo';
+      if ($('.list').width() === 321) {
+        return $('#' + id).attr('alt', description).attr('title', description);
+      }
     };
 
     return JqueryExample;

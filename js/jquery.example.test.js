@@ -13,17 +13,17 @@
     function JqueryExampleTest() {}
 
     JqueryExampleTest.changeDescriptionExpectCorrectAltTag = function() {
-      var description, id, mock;
+      var classListMock, description, id, idTestMock;
       id = 'test';
       description = 'Test Description';
-      mock = MockRepository.generateMock().method('attr');
-      mock.expect().method('attr').withArguments('alt', description).returns(mock).times(1);
-      mock.expect().method('attr').withArguments('title', description).returns(mock).times(1);
-      root.$ = function() {
-        return mock;
-      };
+      idTestMock = MockRepository.generateJqueryMock('$', '#test').methods('attr');
+      idTestMock.expect().method('attr').withArguments('alt', description).returns(idTestMock).times(1);
+      idTestMock.expect().method('attr').withArguments('title', description).returns(idTestMock).times(1);
+      classListMock = MockRepository.generateJqueryMock('$', '.list').methods('width');
+      classListMock.expect().method('width').returns(321).times(1);
       JqueryExample.changeDescription(id, description);
-      return mock.verifyExpectations();
+      idTestMock.verifyExpectations();
+      return classListMock.verifyExpectations();
     };
 
     return JqueryExampleTest;

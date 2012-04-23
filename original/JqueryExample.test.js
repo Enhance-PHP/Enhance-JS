@@ -6,16 +6,9 @@ var JqueryExampleTest = (function () {
             var id = 'test';
             var description = 'Test Description';
 
-            var mock = MockRepository.generateMock([], ['attr']);
+            var mock = Enhance.mockJquery('attr');
             mock.expect().method('attr').withArguments('alt', description).returns(mock).times(1);
             mock.expect().method('attr').withArguments('title', description).returns(mock).times(1);
-            
-            // TODO: jquery helper to do this:
-            $ = function () {
-                if (arguments[0] === '#test') {
-                    return mock;
-                }
-            };
 
             JqueryExample.changeDescription(id, description);
             mock.verifyExpectations();
