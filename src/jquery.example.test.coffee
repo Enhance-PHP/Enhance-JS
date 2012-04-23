@@ -1,7 +1,5 @@
 root = exports ? this
 
-root.$
-
 class JqueryExampleTest
   this.changeDescriptionExpectCorrectAltTag = ->
     id = 'test'

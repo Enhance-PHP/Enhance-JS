@@ -4,8 +4,6 @@
 
   root = typeof exports !== "undefined" && exports !== null ? exports : this;
 
-  root.$;
-
   JqueryExampleTest = (function() {
 
     JqueryExampleTest.name = 'JqueryExampleTest';
